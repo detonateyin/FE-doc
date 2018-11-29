@@ -68,6 +68,8 @@
 
        Object.prototype.toString.call(/abc/) // "[object RegExp]"
 
+       Object.prototype.toString.call(arguments) // "[object Arguments]"
+
 3. ### instanceof
 
     检查原型链
