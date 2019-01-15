@@ -2,6 +2,7 @@
 
 1. add(5)(2, 3)(10) //输出20
 
+
       function add () {
           var args = Array.prototype.slice.call(arguments);
 
