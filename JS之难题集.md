@@ -7,7 +7,7 @@
           var args = Array.prototype.slice.call(arguments);
 
           var fn = function () {
-              var arg_fn = Array.prototype.slice.call(arguments);
+              var arg_fn = Array.prototype.slice.cal∏l(arguments);
               return add.apply(null, args.concat(arg_fn));
           }
 
