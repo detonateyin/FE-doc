@@ -13,6 +13,39 @@ JS的数据类型分为基础类型和引用类型，基础类型包括
 
 引用类型是指Object，以及其衍生对象子类型Araay、Function
 
+### 关于Symbol
+> ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值。Symbol 值通过Symbol函数生成。这就是说，对象的属性名现在可以有两种类型，一种是原来就有的字符串，另一种就是新增的 Symbol 类型。凡是属性名属于 Symbol 类型，就都是独一无二的，可以保证不会与其他属性名产生冲突。
+> —— 阮一峰ESMAScript6入门
+
+即
+1. Symbol 的引入是为了防止对象属性名冲突
+2. Symbol 是一种新的原始数据类型
+3. Symbol 值是独一无二的
+
+### 关于BigInt
+> BigInt 是一种内置对象，它提供了一种方法来表示大于 2^53-1的整数。这原本是 Javascript 中可以用 Number 表示的最大数字。BigInt 可以表示任意大的整数。
+> —— MDN
+
+即
+1. BigInt的引入是为了解决原来JS超过最大安全数时会丢失精度的问题
+
+### 关于包装类
+
+JS只有三种包装类：
+**Number**、**Boolean**、**String**
+
+当基础类型调用方法和属性的时候，其包装类会调用构造方法生成一个对象，然后调用这个对象的方法，之后会销毁这个对象，基础类型还是基础类型
+
+    var a = 11
+    => undefined
+    a.toString()
+    => "11"
+    typeof a
+    => "number"
+    Object.prototype.toString.call(a)
+    => "[object Number]"
+
+
 <br/>
 
 ## 二、数据类型判断

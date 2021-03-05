@@ -92,32 +92,6 @@
     console.log(child2.origin); // false
 
 
-    function Parent(){
-      this.info={
-        name:'default'
-      }
-      this.origin=true
-    }
-
-    Parent.prototype.getInfo = function(){
-      console.log(this.info)
-      console.log(this.origin)
-    }
-
-    function Child(){}
-    Child.prototype=new Parent()
-
-    let child1 = new Child()
-    child1.info.name='张三'
-    child1.getInfo()
-
-    let child2 = new Child()
-    child2.origin=false
-
-    child1.getInfo()
-    child2.getInfo()
-
-
 
 优点：
 - 父类方法可以复用
@@ -132,22 +106,22 @@
 在子类构造函数中调用父类构造函数，可以在子类构造函数中使用call()和apply()方法
 
     function Parent() {
+      this.origin = true
       this.info = {
-        name: "yhd",
-        age: 19,
-      }
+        name: "default"
+      };
     }
 
     function Child() {
-        Parent.call(this)
+      Parent.call(this)
     }
 
     let child1 = new Child();
-    child1.info.gender = "男";
-    console.log(child1.info); // {name: "yhd", age: 19, gender: "男"};
+    child1.info.name = "张三";
+    console.log(child1.info); // {name: "张三"};
 
     let child2 = new Child();
-    console.log(child2.info); // {name: "yhd", age: 19}
+    console.log(child2.info); // {name: "default"}
 
 通过使用call()或apply()方法，Parent构造函数在为Child的实例创建的新对象的上下文执行了，就相当于新的Child实例对象上运行了Parent()函数中的所有初始化代码，结果就是每个实例都有自己的info属性。
 
@@ -161,16 +135,16 @@
         Parent.call(this, name);
         
         //实例属性
-        this.age = 18
+        this.origin = false
     }
 
-    let child1 = new Child("yhd");
-    console.log(child1.info.name); // "yhd"
-    console.log(child1.age); // 18
+    let child1 = new Child("张三");
+    console.log(child1.info.name); // "张三"
+    console.log(child1.origin); // false
 
-    let child2 = new Child("wxb");
-    console.log(child2.info.name); // "wxb"
-    console.log(child2.age); // 18
+    let child2 = new Child("李四");
+    console.log(child2.info.name); // "李四"
+    console.log(child2.origin); // false
 
 在上面例子中，Parent构造函数接收一个name参数，并将他赋值给一个属性，在Child构造函数中调用Parent构造函数时传入这个参数， 实际上会在Child实例上定义name属性。为确保Parent构造函数不会覆盖Child定义的属性，可以在调用父类构造函数之后再给子类实例添加额外的属性
 
@@ -206,16 +180,16 @@
       console.log(this.age);
     }
 
-    let child1 = new Child("yhd", 19);
+    let child1 = new Child("张三", 19);
     child1.colors.push("pink");
     console.log(child1.colors); // ["red", "blue", "yellow", "pink"]
     child1.sayAge(); // 19
-    child1.sayName(); // "yhd"
+    child1.sayName(); // "张三"
 
-    let child2 = new Child("wxb", 30);
+    let child2 = new Child("李四", 30);
     console.log(child2.colors);  // ["red", "blue", "yellow"]
     child2.sayAge(); // 30
-    child2.sayName(); // "wxb"
+    child2.sayName(); // "李四"
 
 上面例子中，Parent构造函数定义了name，colors两个属性，接着又在他的原型上添加了个sayName()方法。Child构造函数内部调用了Parent构造函数，同时传入了name参数，同时Child.prototype也被赋值为Parent实例，然后又在他的原型上添加了个sayAge()方法。这样就可以创建 child1，child2两个实例，让这两个实例都有自己的属性，包括colors，同时还共享了父类的sayName方法
 
@@ -223,8 +197,6 @@
 - 父类的方法可以复用
 - 可以在Child构造函数中向Parent构造函数中传参
 - 父类构造函数中的引用属性不会被共享
-
-缺点：
 
 
 <br/>
@@ -239,7 +211,7 @@
     }
 
     let person = {
-      name: "yhd",
+      name: "张三",
       age: 18,
       friends: ["jack", "tom", "rose"],
       sayName:function() {
@@ -248,9 +220,9 @@
     }
 
     let person1 = objectCopy(person);
-    person1.name = "wxb";
+    person1.name = "李四";
     person1.friends.push("lily");
-    person1.sayName(); // wxb
+    person1.sayName(); // 李四
 
     let person2 = objectCopy(person);
     person2.name = "gsr";
@@ -289,14 +261,14 @@ ES5的Object.create()方法在只有第一个参数时，与这里的objectCopy(
     }
 
     let person = {
-        name: "yhd",
+        name: "张三",
         friends: ["rose", "tom", "jack"]
     }
 
     let person1 = createAnother(person);
     person1.friends.push("lily");
     console.log(person1.friends);
-    person1.getName(); // yhd
+    person1.getName(); // 张三
 
     let person2 = createAnother(person);
     console.log(person2.friends); // ["rose", "tom", "jack", "lily"]
@@ -341,9 +313,9 @@ ES5的Object.create()方法在只有第一个参数时，与这里的objectCopy(
       console.log(this.age);
     }
 
-    let child1 = new Child("yhd", 23);
+    let child1 = new Child("张三", 23);
     child1.sayAge(); // 23
-    child1.sayName(); // yhd
+    child1.sayName(); // 张三
     child1.friends.push("jack");
     console.log(child1.friends); // ["rose", "lily", "tom", "jack"]
 
